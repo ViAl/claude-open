@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<title>Open in Claude</title>
+<style>
+  body { font: 16px/1.5 system-ui, sans-serif; max-width: 720px; margin: 40px auto; padding: 0 16px; color: #222; background: #fff; }
+  a.button { display: inline-block; padding: 10px 18px; border-radius: 8px; background: #c96442; color: #fff; text-decoration: none; }
+  pre { white-space: pre-wrap; background: #f5f5f5; padding: 12px; border-radius: 8px; max-height: 50vh; overflow: auto; }
+  .muted { color: #777; font-size: 14px; }
+  @media (prefers-color-scheme: dark) { body { color: #ddd; background: #1e1e1e; } pre { background: #2a2a2a; } }
+</style>
+</head>
+<body>
+<h1>Открыть в Claude</h1>
+<p id="status">Открываю Claude Desktop…</p>
+<p><a class="button" id="open" href="#">Открыть в Claude</a></p>
+<p class="muted">Ссылка передаётся только во фрагменте адреса (после #) и не уходит на сервер.</p>
+<pre id="prompt"></pre>
+<script>
+(function () {
+  var raw = location.hash.slice(1);
+  var link = "";
+  try { link = decodeURIComponent(raw); } catch (e) { link = ""; }
+  var status = document.getElementById("status");
+  if (link.indexOf("claude://code/new?") !== 0) {
+    status.textContent = "Нет ссылки на Claude в адресе.";
+    document.getElementById("open").style.display = "none";
+    return;
+  }
+  document.getElementById("open").href = link;
+  try {
+    var q = new URL(link.replace("claude://", "https://x/")).searchParams.get("q");
+    document.getElementById("prompt").textContent = q || "";
+  } catch (e) { }
+  location.href = link;
+  status.textContent = "Если Claude не открылся, нажмите кнопку.";
+})();
+</script>
+</body>
+</html>
