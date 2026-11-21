@@ -15,7 +15,7 @@
 </head>
 <body>
 <h1>Открыть в Claude</h1>
-<p id="status">Открываю Claude Desktop…</p>
+<p id="status"></p>
 <p><a class="button" id="open" href="#">Открыть в Claude</a></p>
 <p class="muted">Ссылка передаётся только во фрагменте адреса (после #) и не уходит на сервер.</p>
 <pre id="prompt"></pre>
@@ -41,8 +41,7 @@
     var q = new URL(link.replace("claude://", "https://x/")).searchParams.get("q");
     document.getElementById("prompt").textContent = q || "";
   } catch (e) { }
-  location.href = link;
-  status.textContent = "Если Claude не открылся, нажмите кнопку.";
+  status.textContent = "Проверьте запрос ниже и нажмите кнопку.";
 })();
 </script>
 </body>
