@@ -23,7 +23,13 @@
 (function () {
   var raw = location.hash.slice(1);
   var link = "";
-  try { link = decodeURIComponent(raw); } catch (e) { link = ""; }
+  if (raw.indexOf("q=") === 0) {
+    var p = new URLSearchParams(raw.replace(/\+/g, "%2B"));
+    link = "claude://code/new?q=" + encodeURIComponent(p.get("q") || "")
+        + (p.get("folder") ? "&folder=" + encodeURIComponent(p.get("folder")) : "");
+  } else {
+    try { link = decodeURIComponent(raw); } catch (e) { link = ""; }
+  }
   var status = document.getElementById("status");
   if (link.indexOf("claude://code/new?") !== 0) {
     status.textContent = "Нет ссылки на Claude в адресе.";
